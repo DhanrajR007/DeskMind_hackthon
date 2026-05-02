@@ -1,57 +1,108 @@
 import React from "react";
 import { Link } from "react-router-dom";
-// import { Link2, Twitter, Linkedin } from "lucide-react";
+// import { Bot, Twitter, Linkedin, Code2, Mail } from 'lucide-react';
+import "../styles/footer.css";
 
-const Footer = () => {
-  return (
-    <footer className="footer">
-      <div className="footer-container">
-        <div className="footer-brand">
-          <Link to="/" className="footer-logo">
-            <span className="logo-icon">🧠</span>
-            <span>DeskMind</span>
-          </Link>
-          <p className="footer-description">
-            The most advanced and modern way to shorten your URLs, track
-            analytics, and grow your audience.
-          </p>
-          <div className="footer-socials">
-            {/* <a href="#" aria-label="Twitter">
-              <Twitter size={20} />
-            </a> */}
-            {/* <a href="#" aria-label="GitHub"><Github size={20} /></a> */}
-            {/* <a href="#" aria-label="LinkedIn">
-              <Linkedin size={20} />
-            </a> */}
-          </div>
-        </div>
+const FOOTER_LINKS = [
+  {
+    heading: "Product",
+    links: [
+      { label: "Features", href: "#features" },
+      { label: "How it Works", href: "#how-it-works" },
+      { label: "Testimonials", href: "#testimonials" },
+      { label: "Pricing", to: "/pricing" },
+    ],
+  },
+  {
+    heading: "Resources",
+    links: [
+      { label: "Blog", href: "#" },
+      { label: "Documentation", href: "#" },
+      { label: "Help Center", href: "#" },
+      { label: "API Reference", href: "#" },
+    ],
+  },
+  {
+    heading: "Company",
+    links: [
+      { label: "About", href: "#" },
+      { label: "Careers", href: "#" },
+      { label: "Privacy Policy", href: "#" },
+      { label: "Terms of Service", href: "#" },
+    ],
+  },
+];
 
-        <div className="footer-links-grid">
-          <div className="footer-column">
-            <h4>Product</h4>
-            <a href="#features">Features</a>
-            <a href="#how-it-works">How it Works</a>
-            <Link to="/pricing">Pricing</Link>
-          </div>
-          <div className="footer-column">
-            <h4>Resources</h4>
-            <a href="#">Blog</a>
-            <a href="#">Documentation</a>
-            <a href="#">Help Center</a>
-          </div>
-          <div className="footer-column">
-            <h4>Company</h4>
-            <a href="#">About</a>
-            <a href="#">Privacy Policy</a>
-            <a href="#">Terms of Service</a>
-          </div>
-        </div>
+// const SOCIALS = [
+//   { icon: <Twitter size={16} />, href: "#", label: "Twitter" },
+//   { icon: <Linkedin size={16} />, href: "#", label: "LinkedIn" },
+//   { icon: <Code2 size={16} />, href: "#", label: "GitHub" },
+//   { icon: <Mail size={16} />, href: "#", label: "Email" },
+// ];
+
+const Footer = () => (
+  <footer className="footer" id="site-footer">
+    {/* Top gradient line */}
+    <div className="footer-top-line" />
+
+    <div className="footer-container">
+      {/* Brand column */}
+      <div className="footer-brand">
+        <Link to="/" className="footer-logo" id="footer-logo">
+          <div className="footer-logo-icon">{/* <Bot size={18} /> */}</div>
+          <span>DeskMind</span>
+        </Link>
+
+        <p className="footer-description">
+          The AI-powered customer service platform that resolves tickets, chats
+          with customers 24/7, and makes your support team unstoppable.
+        </p>
+
+        {/* <div className="footer-socials">
+          {SOCIALS.map(s => (
+            <a
+              key={s.label}
+              href={s.href}
+              aria-label={s.label}
+              className="footer-social-btn"
+            >
+              {s.icon}
+            </a>
+          ))}
+        </div> */}
       </div>
-      <div className="footer-bottom">
-        <p>&copy; {new Date().getFullYear()} DeskMind. All rights reserved.</p>
+
+      {/* Links grid */}
+      <div className="footer-links-grid">
+        {FOOTER_LINKS.map((col) => (
+          <div key={col.heading} className="footer-column">
+            <h4>{col.heading}</h4>
+            {col.links.map((link) =>
+              link.to ? (
+                <Link key={link.label} to={link.to}>
+                  {link.label}
+                </Link>
+              ) : (
+                <a key={link.label} href={link.href}>
+                  {link.label}
+                </a>
+              ),
+            )}
+          </div>
+        ))}
       </div>
-    </footer>
-  );
-};
+    </div>
+
+    {/* Bottom bar */}
+    <div className="footer-bottom">
+      <p>© {new Date().getFullYear()} DeskMind, Inc. All rights reserved.</p>
+      <div className="footer-bottom-links">
+        <a href="#">Privacy</a>
+        <a href="#">Terms</a>
+        <a href="#">Cookies</a>
+      </div>
+    </div>
+  </footer>
+);
 
 export default Footer;
