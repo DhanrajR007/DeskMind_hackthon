@@ -5,6 +5,7 @@ const cookieParser = require("cookie-parser");
 const cors = require("cors");
 
 const authRoute = require("./src/routes/auth.route");
+const businessRoute = require("./src/routes/bussiness.route");
 
 const app = express();
 
@@ -14,5 +15,6 @@ app.use(cookieParser());
 app.use(cors({ origin: "http://localhost:5173", credentials: true }));
 
 app.use("/api/auth", authRoute);
+app.use("/api/business", businessRoute);
 
 module.exports = app;
