@@ -2,6 +2,14 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 
 const userSchema = new mongoose.Schema({
+  firstName: {
+    type: String,
+    required: [true, "first name is required"],
+  },
+  lastName: {
+    type: String,
+    required: [true, "last name is required"],
+  },
   email: {
     type: String,
     required: [true, "email is required for account creating"],
@@ -16,10 +24,7 @@ const userSchema = new mongoose.Schema({
       "Please enter a valid email",
     ],
   },
-  name: {
-    type: String,
-    required: [true, "name is required for account creating"],
-  },
+
   password: {
     type: String,
     required: [true, "password is required for account creating"],

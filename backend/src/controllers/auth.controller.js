@@ -5,7 +5,7 @@ const blackListModel = require("../models/blackList.model");
 const { getAvatar } = require("../utils/helper");
 
 const registerController = async (req, res) => {
-  const { name, email, password } = req.body;
+  const { firstName, lastName, email, password } = req.body;
 
   isUserExist = await UserModel.findOne({ email: email });
   if (isUserExist) {
@@ -15,7 +15,8 @@ const registerController = async (req, res) => {
   }
   const avatar = await getAvatar(email);
   const user = await UserModel.create({
-    name: name,
+    firstName: firstName,
+    lastName: lastName,
     email: email,
     password: password,
     avatar: avatar,
@@ -26,11 +27,12 @@ const registerController = async (req, res) => {
   });
 
   res.cookie("token", token);
-
+  req.user = user;
   res.status(201).json({
     user: {
       _id: user._id,
-      name: user.name,
+      firstName: user.firstName,
+      lastName: user.lastName,
       email: user.email,
     },
     token,
@@ -60,11 +62,12 @@ const loginController = async (req, res) => {
   });
 
   res.cookie("token", token);
-
+  req.user = user;
   res.status(201).json({
     user: {
       _id: user._id,
-      name: user.name,
+      firstName: user.firstName,
+      lastName: user.lastName,
       email: user.email,
     },
     token,
@@ -73,14 +76,14 @@ const loginController = async (req, res) => {
 };
 
 const logoutController = async (req, res) => {
- const token = req.cookies.token;
+  const token = req.cookies.token;
 
   if (!token) {
     return res.status(200).json({
       message: "logout successfully",
     });
   }
-  res.clearCookie('token')
+  res.clearCookie("token");
   const blacklisted = await blackListModel.create({
     token,
   });

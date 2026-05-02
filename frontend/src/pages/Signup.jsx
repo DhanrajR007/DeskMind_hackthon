@@ -1,21 +1,22 @@
-import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
-import '../styles/signup.css';
+import React, { useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import "../styles/signup.css";
+import { api } from "../lib/api";
 
 const Signup = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    password: '',
-    confirmPassword: '',
-    phone: '',
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+    phone: "",
     agreeTerms: false,
   });
 
   const [errors, setErrors] = useState({});
-  const [passwordStrength, setPasswordStrength] = useState('');
+  const [passwordStrength, setPasswordStrength] = useState("");
   const [loading, setLoading] = useState(false);
 
   // Validate email format
@@ -26,7 +27,7 @@ const Signup = () => {
 
   // Calculate password strength
   const calculatePasswordStrength = (password) => {
-    if (!password) return '';
+    if (!password) return "";
 
     let strength = 0;
     if (password.length >= 8) strength++;
@@ -35,15 +36,15 @@ const Signup = () => {
     if (/\d/.test(password)) strength++;
     if (/[^A-Za-z0-9]/.test(password)) strength++;
 
-    if (strength <= 2) return 'weak';
-    if (strength <= 3) return 'medium';
-    return 'strong';
+    if (strength <= 2) return "weak";
+    if (strength <= 3) return "medium";
+    return "strong";
   };
 
   // Handle input change
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
-    const newValue = type === 'checkbox' ? checked : value;
+    const newValue = type === "checkbox" ? checked : value;
 
     setFormData((prevState) => ({
       ...prevState,
@@ -51,7 +52,7 @@ const Signup = () => {
     }));
 
     // Calculate password strength
-    if (name === 'password') {
+    if (name === "password") {
       setPasswordStrength(calculatePasswordStrength(value));
     }
 
@@ -59,7 +60,7 @@ const Signup = () => {
     if (errors[name]) {
       setErrors((prevState) => ({
         ...prevState,
-        [name]: '',
+        [name]: "",
       }));
     }
   };
@@ -69,37 +70,37 @@ const Signup = () => {
     const newErrors = {};
 
     if (!formData.firstName.trim()) {
-      newErrors.firstName = 'First name is required';
+      newErrors.firstName = "First name is required";
     }
 
     if (!formData.lastName.trim()) {
-      newErrors.lastName = 'Last name is required';
+      newErrors.lastName = "Last name is required";
     }
 
     if (!formData.email.trim()) {
-      newErrors.email = 'Email is required';
+      newErrors.email = "Email is required";
     } else if (!validateEmail(formData.email)) {
-      newErrors.email = 'Please enter a valid email';
+      newErrors.email = "Please enter a valid email";
     }
 
     if (!formData.password.trim()) {
-      newErrors.password = 'Password is required';
+      newErrors.password = "Password is required";
     } else if (formData.password.length < 8) {
-      newErrors.password = 'Password must be at least 8 characters';
-    } else if (passwordStrength === 'weak') {
-      newErrors.password = 'Password is too weak';
+      newErrors.password = "Password must be at least 8 characters";
+    } else if (passwordStrength === "weak") {
+      newErrors.password = "Password is too weak";
     }
 
     if (formData.password !== formData.confirmPassword) {
-      newErrors.confirmPassword = 'Passwords do not match';
+      newErrors.confirmPassword = "Passwords do not match";
     }
 
-    if (formData.phone && !/^\d{10}$/.test(formData.phone.replace(/\D/g, ''))) {
-      newErrors.phone = 'Please enter a valid phone number';
+    if (formData.phone && !/^\d{10}$/.test(formData.phone.replace(/\D/g, ""))) {
+      newErrors.phone = "Please enter a valid phone number";
     }
 
     if (!formData.agreeTerms) {
-      newErrors.agreeTerms = 'You must agree to the terms and conditions';
+      newErrors.agreeTerms = "You must agree to the terms and conditions";
     }
 
     setErrors(newErrors);
@@ -118,20 +119,22 @@ const Signup = () => {
 
     try {
       // API call would go here
-      console.log('Signup attempt:', formData);
+      console.log("Signup attempt:", formData);
+      const data = await api.signup(formData);
 
       // Simulating API call
       setTimeout(() => {
         setLoading(false);
         // Navigate to login or dashboard after successful signup
-        navigate('/login', {
-          state: { message: 'Account created successfully! Please log in.' },
+        navigate("/login", {
+          state: { message: "Account created successfully! Please log in." },
         });
       }, 1500);
+      console.log(data);
     } catch (error) {
       setLoading(false);
       setErrors({
-        submit: 'Signup failed. Please try again.',
+        submit: "Signup failed. Please try again.",
       });
     }
   };
@@ -140,38 +143,74 @@ const Signup = () => {
     <div className="signup-container">
       <div className="signup-wrapper">
         <div className="signup-card-split">
-          
           {/* Left Branding Section */}
           <div className="signup-branding">
             <div className="branding-content">
               <div className="logo-placeholder">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
                 </svg>
                 <span>DeskMind</span>
               </div>
               <h2>Start Your Journey</h2>
-              <p>Create an account to join our community and transform the way you manage your daily tasks.</p>
-              
+              <p>
+                Create an account to join our community and transform the way
+                you manage your daily tasks.
+              </p>
+
               <div className="features-list">
                 <div className="feature-item">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                  </svg>
                   <span>Advanced Analytics</span>
                 </div>
                 <div className="feature-item">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                  </svg>
                   <span>Cloud Sync</span>
                 </div>
                 <div className="feature-item">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                  </svg>
                   <span>24/7 Support</span>
                 </div>
               </div>
             </div>
             <div className="branding-graphics">
-               <div className="glass-shape shape-1"></div>
-               <div className="glass-shape shape-2"></div>
-               <div className="glass-shape shape-3"></div>
+              <div className="glass-shape shape-1"></div>
+              <div className="glass-shape shape-2"></div>
+              <div className="glass-shape shape-3"></div>
             </div>
           </div>
 
@@ -184,9 +223,7 @@ const Signup = () => {
 
             {/* Error Message */}
             {errors.submit && (
-              <div className="global-error-msg">
-                {errors.submit}
-              </div>
+              <div className="global-error-msg">{errors.submit}</div>
             )}
 
             {/* Form */}
@@ -204,7 +241,9 @@ const Signup = () => {
                     onChange={handleInputChange}
                     required
                   />
-                  {errors.firstName && <span className="form-error">{errors.firstName}</span>}
+                  {errors.firstName && (
+                    <span className="form-error">{errors.firstName}</span>
+                  )}
                 </div>
 
                 <div className="form-group">
@@ -218,7 +257,9 @@ const Signup = () => {
                     onChange={handleInputChange}
                     required
                   />
-                  {errors.lastName && <span className="form-error">{errors.lastName}</span>}
+                  {errors.lastName && (
+                    <span className="form-error">{errors.lastName}</span>
+                  )}
                 </div>
               </div>
 
@@ -234,7 +275,9 @@ const Signup = () => {
                   onChange={handleInputChange}
                   required
                 />
-                {errors.email && <span className="form-error">{errors.email}</span>}
+                {errors.email && (
+                  <span className="form-error">{errors.email}</span>
+                )}
               </div>
 
               {/* Password Field */}
@@ -250,14 +293,24 @@ const Signup = () => {
                     onChange={handleInputChange}
                     required
                   />
-                  {errors.password && <span className="form-error">{errors.password}</span>}
+                  {errors.password && (
+                    <span className="form-error">{errors.password}</span>
+                  )}
 
                   {/* Password Strength Indicator */}
                   {formData.password && (
-                    <div className={`password-strength strength-${passwordStrength}`}>
-                      <div className="strength-bar"><div className="strength-bar-fill"></div></div>
-                      <div className="strength-bar"><div className="strength-bar-fill"></div></div>
-                      <div className="strength-bar"><div className="strength-bar-fill"></div></div>
+                    <div
+                      className={`password-strength strength-${passwordStrength}`}
+                    >
+                      <div className="strength-bar">
+                        <div className="strength-bar-fill"></div>
+                      </div>
+                      <div className="strength-bar">
+                        <div className="strength-bar-fill"></div>
+                      </div>
+                      <div className="strength-bar">
+                        <div className="strength-bar-fill"></div>
+                      </div>
                     </div>
                   )}
                 </div>
@@ -291,11 +344,13 @@ const Signup = () => {
                   required
                 />
                 <div className="terms-text">
-                  I agree to the{' '}
-                  <Link to="/terms">Terms and Conditions</Link> and{' '}
-                  <Link to="/privacy">Privacy Policy</Link>
+                  I agree to the <Link to="/terms">Terms and Conditions</Link>{" "}
+                  and <Link to="/privacy">Privacy Policy</Link>
                   {errors.agreeTerms && (
-                    <div className="form-error" style={{ display: 'block', marginTop: '4px' }}>
+                    <div
+                      className="form-error"
+                      style={{ display: "block", marginTop: "4px" }}
+                    >
                       {errors.agreeTerms}
                     </div>
                   )}
@@ -303,8 +358,12 @@ const Signup = () => {
               </div>
 
               {/* Submit Button */}
-              <button type="submit" className="signup-button" disabled={loading}>
-                {loading ? 'Creating Account...' : 'Create Account'}
+              <button
+                type="submit"
+                className="signup-button"
+                disabled={loading}
+              >
+                {loading ? "Creating Account..." : "Create Account"}
               </button>
             </form>
 
@@ -314,7 +373,11 @@ const Signup = () => {
             {/* Social Signup */}
             <div className="social-signup">
               <button type="button" className="social-button">
-                <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
                   <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" />
                   <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" />
                   <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" />

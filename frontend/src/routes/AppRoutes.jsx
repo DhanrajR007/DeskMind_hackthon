@@ -2,6 +2,7 @@ import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import Login from '../pages/Login';
 import Signup from '../pages/Signup';
+import Dashboard from '../pages/Dashboard';
 
 const AppRoutes = () => {
   return (
@@ -10,8 +11,7 @@ const AppRoutes = () => {
       <Route path="/signup" element={<Signup />} />
       {/* Redirect root to login */}
       <Route path="/" element={<Navigate to="/login" replace />} />
-      {/* Placeholder for other routes */}
-      <Route path="/dashboard" element={<div>Dashboard - Coming Soon</div>} />
+      <Route path="/dashboard" element={<Dashboard />} />
     </Routes>
   );
 };
