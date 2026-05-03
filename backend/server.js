@@ -1,7 +1,48 @@
+require("dotenv").config()
 const app = require("./app.js");
 const { connectDb, isDbReady } = require("./src/config/db.js");
 const PORT =  3000;
+const { createServer } = require("http");
+const { Server } = require("socket.io");
+const generateResponse = require("./src/service/ai.service.js")
 
+
+const httpServer = createServer(app);
+const io = new Server(httpServer, { 
+  cors:{
+    origin: "http://localhost:5173",
+  }
+ });
+
+const chatHistory = [];
+
+io.on("connection", (socket) => {
+  console.log("A user connected")
+
+  socket.on("disconnect",()=>{
+    console.log("A user disconnected")
+  })
+
+  socket.on("ai-message",async (data)=>{
+    console.log("recived ai message:", data)
+
+    chatHistory.push({
+      role: "user",
+      parts: [{text:data}]
+    })
+
+    const response = await generateResponse(chatHistory);
+    console.log("AI response:",response);
+
+    chatHistory.push({
+      role: "model",
+      parts: [{text:response}]
+    })
+
+    socket.emit("ai-message-response",response)
+
+  })
+});
 
 
 app.use('/api', (req, res, next) => {
@@ -12,7 +53,7 @@ app.use('/api', (req, res, next) => {
 })
 
 
-const server = app.listen(PORT, () => {
+const server = httpServer.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
 
