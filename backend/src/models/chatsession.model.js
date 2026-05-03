@@ -26,6 +26,14 @@ const chatSessionSchema = new mongoose.Schema(
     customerFeedback: {
       type: String,
     },
+    aiMessageCount: {
+      type: Number,
+      default: 0,
+    },
+    isTicketCreated: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     timestamps: true,

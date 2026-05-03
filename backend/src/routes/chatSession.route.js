@@ -4,13 +4,5 @@ const chatSessionController = require("../controllers/chatSession.controller");
 
 router.post("/create", chatSessionController.createSessionController);
 router.get("/:id", chatSessionController.getSessionController);
-router.get(
-  "/client/:clientId",
-  chatSessionController.getSessionsByClientController,
-);
-router.get(
-  "/agent/:agentId",
-  chatSessionController.getSessionsByAgentController,
-);
-
+router.post("/close/:id", chatSessionController.closeSessionController);
 module.exports = router;

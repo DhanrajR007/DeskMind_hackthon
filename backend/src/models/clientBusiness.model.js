@@ -35,6 +35,14 @@ const clientSchema = new mongoose.Schema({
     enum: ["free", "premium", "enterprise"],
     default: "free",
   },
+  ai_config: {
+    name: { type: String },
+    description: { type: String },
+    location: { type: String },
+    services: { type: [String] },
+    tone: { type: String },
+    language: { type: String },
+  },
   isActive: {
     type: Boolean,
     default: false,

@@ -10,12 +10,6 @@ const messageSchema = new mongoose.Schema(
   {
     visitorId: {
       type: String,
-      required: [true, "visitor id is required"],
-    },
-    agentId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Agent",
-      required: [true, "agent id is required"],
     },
     sessionId: {
       type: mongoose.Schema.Types.ObjectId,
