@@ -12,13 +12,16 @@
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
+    "@google/genai": "^1.51.0",
     "bcrypt": "^6.0.0",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.6",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
+    "io": "^1.5.8",
     "jsonwebtoken": "^9.0.3",
     "md5": "^2.3.0",
-    "mongoose": "^9.6.1"
+    "mongoose": "^9.6.1",
+    "socket": "^1.1.91"
   }
 }
