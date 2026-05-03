@@ -45,6 +45,7 @@ io.on("connection", (socket) => {
 });
 
 
+
 app.use('/api', (req, res, next) => {
   if (!isDbReady()) {
     return res.status(503).json({ message: "DB not connected" })
